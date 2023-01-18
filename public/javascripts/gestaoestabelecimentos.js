@@ -494,6 +494,21 @@ async function getLikedAcomodacao(id_user){
   
   }
 
+  async function altertoDone(id_restaurante){
+
+    try{
+     //ENVIAR METODO DE ATUALIZAÇÃO
+     let newExercise2 = await $.ajax({
+      url: "/users/setestabelecimentolocaldone/" + id_restaurante,
+      method: "put",
+      dataType: "json"
+      });
+    } catch(err){
+      console.log("OK");
+    }
+
+  }
+
   async function addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude, restaurant_id){
 
     let local_1 = local_morada;
@@ -532,16 +547,11 @@ async function getLikedAcomodacao(id_user){
     
         window.alert("Mesa adicionada ao Pack");
 
-        //ENVIAR METODO DE ATUALIZAÇÃO
-       let newExercise2 = await $.ajax({
-        url: "/users/setestabelecimentolocaldone/" + restaurant_identifier,
-        method: "put",
-        dataType: "json"
-        });
-
       } catch (err) {
 
         window.alert("Alert");
+        altertoDone(restaurant_identifier);
+
       }
 
     }
