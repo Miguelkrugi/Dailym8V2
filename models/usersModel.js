@@ -2080,7 +2080,7 @@ module.exports.UpdateMesaAvailable = async function(id_plate){
 module.exports.UpdateRestaurantePositionValidate = async function(id_plate){
 
     try {
-        let sql = "UPDATE restaurant " + "SET establishment_state_place_id = '0' " + "WHERE restaurant_id = " + id_plate;
+        let sql = "UPDATE restaurant " + "SET establishment_state_place_id = 0 " + "WHERE restaurant_id = " + id_plate;
         let result = await pool.query(sql);
         let pedidofound = result.rows;
         console.log("[ementasModel.getEmentasUser] pedido = " + JSON.stringify(pedidofound));

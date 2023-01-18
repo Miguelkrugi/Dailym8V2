@@ -517,7 +517,6 @@ async function getLikedAcomodacao(id_user){
     let local_4 = local_restaurante_id;
     let local5 =local_latitude;
     let local6 = local_longitude;
-    let restaurant_identifier = restaurant_id;
 
 
 
@@ -549,8 +548,9 @@ async function getLikedAcomodacao(id_user){
 
       } catch (err) {
 
+        altertoDone(restaurant_id);
+
         window.alert("Alert");
-        altertoDone(restaurant_identifier);
 
       }
 
@@ -562,7 +562,7 @@ async function getLikedAcomodacao(id_user){
     sessionStorage.setItem('restaurant_id', restaurante.restaurant_id);
     document.querySelector('.bg-modal15').style.display = "flex";
 
-    var rest_id = restaurante.restaurant_id;
+  //  var rest_id = restaurante.restaurant_id;
 
     document.getElementById('botaounico').addEventListener("click", function() {
       
@@ -575,7 +575,7 @@ async function getLikedAcomodacao(id_user){
      let geometry_info_point = "POINT(" + local_latitude + " " + local_longitude + ")"
      // let geometry_info_point = '"POINT(" local_latitude + " " + local_longitude + ")'
 
-      addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude, rest_id);
+      addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude, restaurante.restaurant_id);
       
     });    
   }
