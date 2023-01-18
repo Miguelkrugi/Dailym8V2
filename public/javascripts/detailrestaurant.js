@@ -60,9 +60,24 @@ async function getNumberLikesRestaurant(restaurante_id){
             // The location of Uluru
             const uluru = { lat: lat, lng: lng };
             // The map, centered at Uluru
+            const PORTUGAL_MAPBOUNDS = {
+              //PONTO 1 -> NORTH E WEST
+              //PONTO 2 -> SOUTH E EAST
+              north:  42.138649,
+              south: 36.346396,
+              west: -10.031045,
+              east: -6.353972,
+             }
             const map = new google.maps.Map(document.getElementById("map"), {
               zoom: 4,
               center: uluru,
+              restriction: {
+
+                latLngBounds: PORTUGAL_MAPBOUNDS,
+                strictBounds: false,
+          
+            },
+            disableDefaultUI: true,
             });
             // The marker, positioned at Uluru
             const marker = new google.maps.Marker({
@@ -97,6 +112,8 @@ async function getNumberLikesRestaurant(restaurante_id){
 
             var latitude = position[0].local_latitude;
             var longitude = position[0].local_longitude;
+
+            
 
             initMap(latitude, longitude);       
             

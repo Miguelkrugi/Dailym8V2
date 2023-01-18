@@ -1,3 +1,4 @@
+
 async function criarMesa(rest_id, tipo_mesa_id){
 
   var value_for_availability = 2;
@@ -442,10 +443,11 @@ async function getMenu(id_restaurante){
     
     });
   
+    turnTableAvailable(reserva_mesa.mesa_id);
   
    } catch (err){
   
-    turnTableAvailable(reserva_mesa.mesa_id);
+    
   console.log(err);
     window.alert("Não pode apagar a mesa, pois tem reservas associadas à mesma.");
   
@@ -511,6 +513,35 @@ async function getMenu(id_restaurante){
     }
     }
 
+    /// COUNT THE AVAILABLE TABLES \\\
+
+    async function getMesasAvailableRest(restaurant_id){
+
+      var utilizador_id = sessionStorage.getItem("utilizador_id");
+      console.log("setItem->userId = " + utilizador_id);
+
+      try{
+    
+        let suggestedestacionamentos = await $.ajax({
+        
+        url: "/users/count/mesas/" + restaurant_id,
+        method: "get",
+        dataType: "json",
+        
+        });
+
+        document.getElementById("restauranttablesavailable").innerHTML = "Mesas Disponiveis: " + suggestedestacionamentos[0].count;
+
+      } catch(err){
+        console.log(err);
+      }
+
+
+
+    }
+
+
+    ///////////////////////////////////
 
 window.onload = function exampleFunction() {
     console.log('The Script will load now.');
@@ -568,6 +599,8 @@ window.onload = function exampleFunction() {
    getMenu(restaurant_id);
 
    getMesas(restaurant_id);
+
+   getMesasAvailableRest(restaurant_id);
 
    //VARIAVEL QUE ARMAZENA O VALOR DO TIPO DE PRATO
 
