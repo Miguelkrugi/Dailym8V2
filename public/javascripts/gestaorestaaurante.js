@@ -138,30 +138,7 @@ console.log(err);
 
 }
 
-async function removerReservaMesa(reserva_mesa){
 
-  var del = reserva_mesa.id_reservation;
-  console.log("ID da mesa: "+del);
- try {
-
-   //ENVIAR METODO
-   let asd = await $.ajax({
-
-    url: "/users/deleteresmesa/" + del,
-    method: "delete",
-    contentType: "application/json",
-    dataType: "json"
-  
-  });
-
-
- } catch (err){
-console.log(err);
-  window.alert("Não pode apagar a mesa, pois tem reservas associadas à mesma.");
-
- }
-
-}
 
 
 
@@ -420,6 +397,61 @@ async function getMenu(id_restaurante){
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
+
+  async function turnTableAvailable(id){
+    
+    console.log("IDENTIFICADOR (DEVE SER 3): " + id);
+
+
+
+        try{
+      
+          let ementas = await $.ajax({
+      
+            url: "/users/setmesaavailable/" + id,
+            method: "put",
+            dataType: "json",
+      
+          });
+      
+          console.log("[utilizador] utilizador = " + JSON.stringify(ementas));
+      
+          
+      
+      
+       } catch(err){
+         console.log(err);
+       }
+      
+      
+       }
+
+  async function removerReservaMesa(reserva_mesa){
+
+    var del = reserva_mesa.id_reservation;
+    console.log("ID da mesa: "+del);
+   try {
+  
+     //ENVIAR METODO
+     let asd = await $.ajax({
+  
+      url: "/users/deleteresmesa/" + del,
+      method: "delete",
+      contentType: "application/json",
+      dataType: "json"
+    
+    });
+  
+  
+   } catch (err){
+  
+    turnTableAvailable(reserva_mesa.mesa_id);
+  console.log(err);
+    window.alert("Não pode apagar a mesa, pois tem reservas associadas à mesma.");
+  
+   }
+  
+  }
 
   function createreservaHTML(reserva_mesa){
   

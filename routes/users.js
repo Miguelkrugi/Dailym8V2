@@ -1197,6 +1197,19 @@ router.put('/setmesaavailable/:iduser', async function(req, res, next){
 
 });
 
+/////////////////////////// ALTERAR ESTABELECIMENTO PARA 0 APÓS O ADICIONAR DE UMA LOCALIZAÇÃO //////////////////////////////////
+
+router.put('/setestabelecimentolocaldone/:iduser', async function(req, res, next){
+
+  let id_user = req.params.iduser;
+  console.log("[artigosRoutes] Update pedido with id: " + id_user);
+  let result = await usersModel.UpdateRestaurantePositionValidate(id_user);
+  res.status(result.status).send(result.data);
+
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 router.put('/setspotunavailable/:iduser', async function(req, res, next){
 

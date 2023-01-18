@@ -494,7 +494,7 @@ async function getLikedAcomodacao(id_user){
   
   }
 
-  async function addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude){
+  async function addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude, restaurant_id){
 
     let local_1 = local_morada;
     let local_2 = ref_system_id;
@@ -502,6 +502,7 @@ async function getLikedAcomodacao(id_user){
     let local_4 = local_restaurante_id;
     let local5 =local_latitude;
     let local6 = local_longitude;
+    let restaurant_identifier = restaurant_id;
 
 
 
@@ -531,7 +532,15 @@ async function getLikedAcomodacao(id_user){
     
         window.alert("Mesa adicionada ao Pack");
 
+        //ENVIAR METODO DE ATUALIZAÇÃO
+       let newExercise2 = await $.ajax({
+        url: "/users/setestabelecimentolocaldone/" + restaurant_identifier,
+        method: "put",
+        dataType: "json"
+        });
+
       } catch (err) {
+
         window.alert("Alert");
       }
 
@@ -556,7 +565,7 @@ async function getLikedAcomodacao(id_user){
      let geometry_info_point = "POINT(" + local_latitude + " " + local_longitude + ")"
      // let geometry_info_point = '"POINT(" local_latitude + " " + local_longitude + ")'
 
-      addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude);
+      addposition(local_morada, ref_system_id, geometry_info_point, local_restaurante_id, local_latitude, local_longitude, rest_id);
       
     });    
   }

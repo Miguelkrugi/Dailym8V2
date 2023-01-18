@@ -2077,6 +2077,21 @@ module.exports.UpdateMesaAvailable = async function(id_plate){
 
 }
 
+module.exports.UpdateRestaurantePositionValidate = async function(id_plate){
+
+    try {
+        let sql = "UPDATE restaurant " + "SET establishment_state_place_id = '0' " + "WHERE restaurant_id = " + id_plate;
+        let result = await pool.query(sql);
+        let pedidofound = result.rows;
+        console.log("[ementasModel.getEmentasUser] pedido = " + JSON.stringify(pedidofound));
+        return { status: 200, data: pedidofound };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+
+}
+
 module.exports.UpdateSpotUnavailable = async function(id_plate){
 
     try {
