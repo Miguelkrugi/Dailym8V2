@@ -145,22 +145,22 @@ async function getSuggestedRestaurants(){
   }
   }
 
-  async function openacomodacao(restaurante){
+  async function openacomodacao(acomodacao){
 
     console.log("FUNÇÃO CHAMADA!");
-    console.log("NOME: " + restaurante.establishment_name)
-      console.log("DESCRICAO: " + restaurante.establishment_description)
-      console.log("ID: " + restaurante.equipment_service_id)
-      console.log("STATE ID: " + restaurante.state_id)
+    console.log("NOME: " + acomodacao.establishment_name)
+      console.log("DESCRICAO: " + acomodacao.establishment_description)
+      console.log("ID: " + acomodacao.equipment_service_id)
+      console.log("STATE ID: " + acomodacao.state_id)
       
-      sessionStorage.setItem('establishment_id', restaurante.establishment_id);
-      sessionStorage.setItem('establishment_name', restaurante.establishment_name);
-      sessionStorage.setItem('establishment_description', restaurante.establishment_description);
-      sessionStorage.setItem('equipment_service_id', restaurante.equipment_service_id);
-      sessionStorage.setItem('number_acomodacoes', restaurante.number_acomodacoes);
-      sessionStorage.setItem('establishment_utilizador_id', restaurante.establishment_utilizador_id);
-      sessionStorage.setItem('type_service_identifier', restaurante.type_service_identifier);
-      sessionStorage.setItem('state_id', restaurante.state_id);
+      sessionStorage.setItem('establishment_id', acomodacao.establishment_id);
+      sessionStorage.setItem('establishment_name', acomodacao.establishment_name);
+      sessionStorage.setItem('establishment_description', acomodacao.establishment_description);
+      sessionStorage.setItem('equipment_service_id', acomodacao.equipment_service_id);
+      sessionStorage.setItem('number_acomodacoes', acomodacao.number_acomodacoes);
+      sessionStorage.setItem('establishment_utilizador_id', acomodacao.establishment_utilizador_id);
+      sessionStorage.setItem('type_service_identifier', acomodacao.type_service_identifier);
+      sessionStorage.setItem('state_id', acomodacao.state_id);
   
   
   }
@@ -223,11 +223,31 @@ async function getSuggestedRestaurants(){
     }
     }
 
+    async function openestacionamento(acomodacao){
+
+      console.log("FUNÇÃO CHAMADA!");
+      console.log("NOME: " + acomodacao.establishment_name)
+        console.log("DESCRICAO: " + acomodacao.establishment_description)
+        console.log("ID: " + acomodacao.equipment_service_id)
+        console.log("STATE ID: " + acomodacao.state_id)
+        
+        sessionStorage.setItem('establishment_id', acomodacao.establishment_id);
+        sessionStorage.setItem('establishment_name', acomodacao.establishment_name);
+        sessionStorage.setItem('establishment_description', acomodacao.establishment_description);
+        sessionStorage.setItem('parking_lot_id', acomodacao.parking_lot_id);
+        sessionStorage.setItem('parking_lot_number_spots', acomodacao.parking_lot_number_spots);
+        sessionStorage.setItem('establishment_utilizador_id', acomodacao.establishment_utilizador_id);
+        sessionStorage.setItem('type_service_identifier', acomodacao.type_service_identifier);
+        sessionStorage.setItem('state_id', acomodacao.state_id);
+    
+    
+    }
+
     function createestacionamentoHTML(estacionamento){
         
         //return "<div class='item2' style='height:300px; background-color:white;'>" + "<div class='strip'>"  + " <div class='item_title'>" + "<h3>" + restaurante.establishment_name + "</h3>" + "<small>" + restaurante.restaurante_number_tables + "</small><button onclick='" + JSON.stringify(restaurante) + "'>VER MAIS</button></div></figure></div></div>"
        
-        return "<div class='item' style='width:23%; height:35%;'><div class='strip'><figure><a href='detail-restaurant.html' class='strip_info' onclick='printtest()'><div class='item_title'><h3>" + estacionamento.establishment_name + "</h3><small>" + estacionamento.parking_lot_number_spots + "</small></div></a></figure></div></div>"
+        return "<div class='item' style='width:23%; height:35%;'><div class='strip'><figure><a href='detail-estacionamento.html' class='strip_info'  onclick='openestacionamento(" + JSON.stringify(estacionamento) + ")'><div class='item_title'><h3>" + estacionamento.establishment_name + "</h3><small>" + estacionamento.parking_lot_number_spots + "</small></div></a></figure></div></div>"
         // return "<div class='selectbox5' id='selectbox55'>" + recipe.receita_titulo + "</div>";
       
        /*<p name="criador1" id="criador1" style="text-align: center;font-size: 90%; margin-top: 2%;">CRIADOR DA RECEITA </p>*/

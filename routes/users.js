@@ -142,6 +142,14 @@ router.get('/countlikeacomodacao/:idacomodacao', async function(req, res, next) 
 
 });
 
+router.get('/countlikeestacionamento/:idacomodacao', async function(req, res, next) {
+
+  let idacomodacao = req.params.idacomodacao;
+  let result = await usersModel.getCountLikeEstacionamento(idacomodacao);
+  res.status(result.status).send(result.data);
+
+});
+
 router.get('/seeplates/filter/:idestabelecimento/:idplatetype', async function(req, res, next) {
 
   let estabelecimento_id = req.params.idestabelecimento;
@@ -259,6 +267,31 @@ router.get('/getacomodacoes/filter/disponibilidade/:idestabelecimento/:idtipodis
   res.status(result.status).send(result.data);
 
 });
+
+///////////////////////////////////// FILTRAR ACOMODACOES POR LINHA E POR COLUNA //////////////////////////////////
+
+router.get('/seeacomodacao/filter/linha/:idequipmentservice/:idlinha', async function(req, res, next) {
+
+  let equipment_service_id = req.params.idequipmentservice;
+  let linha_id = req.params.idlinha;
+
+  let result = await usersModel.getAcomodacoesServiceFilterLine(equipment_service_id, linha_id);
+  res.status(result.status).send(result.data);
+
+});
+
+router.get('/seeacomodacao/filter/linha/:idequipmentservice/:idcoluna', async function(req, res, next) {
+
+  let equipment_service_id = req.params.idequipmentservice;
+  let coluna_id = req.params.idcoluna;
+
+  let result = await usersModel.getAcomodacoesServiceFilterColumn(equipment_service_id, coluna_id);
+  res.status(result.status).send(result.data);
+
+});
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -585,10 +618,34 @@ router.get('/getlike/checklike/acomodacao/:idutilizador/:idacomodacao', async fu
 
 });
 
+router.get('/getlike/checklike/estacionamento/:idutilizador/:idacomodacao', async function(req, res, next) { //TIPO | PATH PARA O METODO // AINDA N FOI APLICADO
+
+  let utilizador_id = req.params.idutilizador;
+  let acomodacao_id = req.params.idacomodacao; //ARMAZENAS O INPUT DO URL NUMA VARIAVEL
+
+  let result = await usersModel.getCheckLikeEstacionamento(utilizador_id ,acomodacao_id); //FUNCAO É CHAMADA DO FICHEIRO usersModel
+  res.status(result.status).send(result.data);
+
+});
+
 router.post('/insertnewlike', async function(req, res, next) {
   let newPedido = req.body;
   console.log("[pedidosRoutes] Saving pedido " + JSON.stringify(newPedido));
   let result = await usersModel.saveLikeRestaurante(newPedido);
+  res.sendStatus(result.status).send(result.data);
+});
+
+router.post('/insertnewlikeacomodacao', async function(req, res, next) {
+  let newPedido = req.body;
+  console.log("[pedidosRoutes] Saving pedido " + JSON.stringify(newPedido));
+  let result = await usersModel.saveLikeAcomodacao(newPedido);
+  res.sendStatus(result.status).send(result.data);
+});
+
+router.post('/insertnewlikeestacionamento', async function(req, res, next) {
+  let newPedido = req.body;
+  console.log("[pedidosRoutes] Saving pedido " + JSON.stringify(newPedido));
+  let result = await usersModel.saveLikeEstacionamento(newPedido);
   res.sendStatus(result.status).send(result.data);
 });
 
@@ -605,6 +662,26 @@ router.delete('/deletelike/restaurante/:idutilizador/:idrestaurante', async func
   let restaurant_id = req.params.idrestaurante;
  // console.log("[artigosRoutes] Deleting pedido with id: " + pedido_id);
   let result = await usersModel.DeleteLike(utilizador_id, restaurant_id);
+  res.status(result.status).send(result.data);
+
+});
+
+router.delete('/deletelike/acomodacao/:idutilizador/:idrestaurante', async function(req, res, next){
+
+  let utilizador_id = req.params.idutilizador;
+  let restaurant_id = req.params.idrestaurante;
+ // console.log("[artigosRoutes] Deleting pedido with id: " + pedido_id);
+  let result = await usersModel.DeleteLikeAcomodacao(utilizador_id, restaurant_id);
+  res.status(result.status).send(result.data);
+
+});
+
+router.delete('/deletelike/estacionamento/:idutilizador/:idrestaurante', async function(req, res, next){
+
+  let utilizador_id = req.params.idutilizador;
+  let restaurant_id = req.params.idrestaurante;
+ // console.log("[artigosRoutes] Deleting pedido with id: " + pedido_id);
+  let result = await usersModel.DeleteLikeEstacionamento(utilizador_id, restaurant_id);
   res.status(result.status).send(result.data);
 
 });
@@ -1179,6 +1256,13 @@ router.post('/insertresspot', async function(req, res, next) {
   res.sendStatus(result.status).send(result.data);
 });
 
+router.post('/insertresacomodacao', async function(req, res, next) {
+  let newPedido = req.body;
+  console.log("[pedidosRoutes] Saving pedido " + JSON.stringify(newPedido));
+  let result = await usersModel.saveReservaAcomodacao(newPedido);
+  res.sendStatus(result.status).send(result.data);
+});
+
 router.put('/setmesaunavailable/:iduser', async function(req, res, next){
 
   let id_user = req.params.iduser;
@@ -1193,6 +1277,24 @@ router.put('/setmesaavailable/:iduser', async function(req, res, next){
   let id_user = req.params.iduser;
   console.log("[artigosRoutes] Update pedido with id: " + id_user);
   let result = await usersModel.UpdateMesaAvailable(id_user);
+  res.status(result.status).send(result.data);
+
+});
+
+router.put('/setacomodacaounavailable/:iduser', async function(req, res, next){
+
+  let id_user = req.params.iduser;
+  console.log("[artigosRoutes] Update pedido with id: " + id_user);
+  let result = await usersModel.UpdateAcomodacaoUnavailable(id_user);
+  res.status(result.status).send(result.data);
+
+});
+
+router.put('/setacomodacaoavailable/:iduser', async function(req, res, next){
+
+  let id_user = req.params.iduser;
+  console.log("[artigosRoutes] Update pedido with id: " + id_user);
+  let result = await usersModel.UpdateAcomodacaoAvailable(id_user);
   res.status(result.status).send(result.data);
 
 });

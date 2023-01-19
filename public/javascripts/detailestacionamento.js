@@ -10,7 +10,7 @@ async function getNumberLikesRestaurant(restaurante_id){
     
     let qlikes = await $.ajax({
     
-    url: "/users/countlikerestaurant/" + restaurante_id,
+    url: "/users/countlikeestacionamento/" + restaurante_id,
     method: "get",
     dataType: "json",
     
@@ -126,7 +126,7 @@ async function getChangeLike(utilizador_id ,restaurant_id){
   
     let suggestedrestaurants = await $.ajax({
     
-    url: "/users/getlike/checklike/restaurante/" + utilizador_id + "/" + restaurant_id, //FALTA COLOCAR
+    url: "/users/getlike/checklike/estacionamento/" + utilizador_id + "/" + restaurant_id, //FALTA COLOCAR
     method: "get",
     dataType: "json",
     
@@ -144,7 +144,7 @@ async function getChangeLike(utilizador_id ,restaurant_id){
 
     }
   
-    console.log("MORADA: " + suggestedrestaurants[0].local_morada) //detalhe
+  //  console.log("MORADA: " + suggestedrestaurants[0].local_morada) //detalhe
   
   
     //  document.getElementById("withoutresultsrestaurantes").style.visibility = "visible";
@@ -156,7 +156,7 @@ async function getChangeLike(utilizador_id ,restaurant_id){
     
    // restaurantesElem.innerHTML = html;
   
-   document.getElementById('restaurantmorada').innerHTML = "Morada: " + suggestedrestaurants[0].local_morada;
+ //  document.getElementById('restaurantmorada').innerHTML = "Morada: " + suggestedrestaurants[0].local_morada;
     
     
     } catch(err){
@@ -177,13 +177,13 @@ async function putLike(rest_id, user_id){
    let data = {
 
     like_utilizador: userr_id,
-    like_restaurante: resta_id,
+    like_estacionamento: resta_id,
 
    }
 
    //ENVIAR METODO
    let newExercise = await $.ajax({
-    url: "/users/insertnewlike/",
+    url: "/users/insertnewlikeestacionamento/",
     method: "post",
     data: JSON.stringify(data),
     contentType: "application/json",
@@ -212,9 +212,8 @@ async function deleteLike(rest_id, user_id){
 
    //ENVIAR METODO
    let newExercise = await $.ajax({
-    url: "/users/deletelike/restaurante/" + user_id + "/" + rest_id,
+    url: "/users/deletelike/estacionamento/" + user_id + "/" + rest_id,
     method: "delete",
-    data: JSON.stringify(data),
     contentType: "application/json",
     dataType: "json"
     });
@@ -227,10 +226,6 @@ async function deleteLike(rest_id, user_id){
   window.alert("Receita Criada.");
 
  }
- 
-
-
- 
 }
 
 

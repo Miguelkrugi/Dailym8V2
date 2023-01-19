@@ -265,6 +265,20 @@ module.exports.getCountLikeAcomodacao = async function(equipment_service_id) {
     }
 }
 
+module.exports.getCountLikeEstacionamento = async function(equipment_service_id) {
+    try {
+        let sql = "SELECT COUNT(*) FROM like_estacionamento WHERE like_estacionamento = " + equipment_service_id;
+        let result = await pool.query(sql);
+        let users = result.rows;
+        console.log("[usersModel.getUsers] users = " + JSON.stringify(users));
+        return { status: 200, data: users };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+}
+
+
 module.exports.getRestaurantPlatesFilter = async function(est_id, plate_identifier) {
     try {
         console.error("__________________________________________________________");
@@ -377,6 +391,32 @@ module.exports.getAcomodacoesService = async function(est_id) {
 module.exports.getAcomodacoesServiceFilter = async function(est_id, tipo_acom_id) {
     try {
         let sql = "SELECT *, acomodacao_type.acomodacao_type_id, acomodacao_type.acomodacao_type_name, position_acomodacao.position_acomodacao_id, position_acomodacao.position_line, position_acomodacao.position_column FROM acomodacao INNER JOIN acomodacao_type ON acomodacao_type.acomodacao_type_id = acomodacao.acomodacao_type_id INNER JOIN position_acomodacao ON position_acomodacao.acomodacao_identifier = acomodacao.acomodacao_id WHERE acomodacao.acomodacao_equipment_service_id = " + est_id + " AND acomodacao.acomodacao_availability = '0' AND acomodacao.acomodacao_type_id = " + tipo_acom_id;
+        let result = await pool.query(sql);
+        let users = result.rows;
+        console.log("[usersModel.getUsers] users = " + JSON.stringify(users));
+        return { status: 200, data: users };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+}
+
+module.exports.getAcomodacoesServiceFilterLine = async function(est_id, line_id) {
+    try {
+        let sql = "SELECT *, acomodacao_type.acomodacao_type_id, acomodacao_type.acomodacao_type_name, position_acomodacao.position_acomodacao_id, position_acomodacao.position_line, position_acomodacao.position_column FROM acomodacao INNER JOIN acomodacao_type ON acomodacao_type.acomodacao_type_id = acomodacao.acomodacao_type_id INNER JOIN position_acomodacao ON position_acomodacao.acomodacao_identifier = acomodacao.acomodacao_id WHERE acomodacao.acomodacao_equipment_service_id = " + est_id + " AND acomodacao.acomodacao_availability = '0' AND position_acomodacao.position_line = " + line_id;
+        let result = await pool.query(sql);
+        let users = result.rows;
+        console.log("[usersModel.getUsers] users = " + JSON.stringify(users));
+        return { status: 200, data: users };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+}
+
+module.exports.getAcomodacoesServiceFilterColumn = async function(est_id, coluna_id) {
+    try {
+        let sql = "SELECT *, acomodacao_type.acomodacao_type_id, acomodacao_type.acomodacao_type_name, position_acomodacao.position_acomodacao_id, position_acomodacao.position_line, position_acomodacao.position_column FROM acomodacao INNER JOIN acomodacao_type ON acomodacao_type.acomodacao_type_id = acomodacao.acomodacao_type_id INNER JOIN position_acomodacao ON position_acomodacao.acomodacao_identifier = acomodacao.acomodacao_id WHERE acomodacao.acomodacao_equipment_service_id = " + est_id + " AND acomodacao.acomodacao_availability = '0' AND position_acomodacao.position_column = " + coluna_id;
         let result = await pool.query(sql);
         let users = result.rows;
         console.log("[usersModel.getUsers] users = " + JSON.stringify(users));
@@ -857,6 +897,19 @@ module.exports.getCheckLikeAcomodacao = async function(utilizador_id ,acomodacao
     }
 }
 
+module.exports.getCheckLikeEstacionamento = async function(utilizador_id ,estacionamento_id) {
+    try {
+        let sql = "SELECT * FROM like_estacionamento WHERE like_estacionamento.like_utilizador = " + utilizador_id + " AND like_estacionamento.like_estacionamento = " + estacionamento_id;
+        let result = await pool.query(sql);
+        let users = result.rows;
+        console.log("[usersModel.getUsers] users = " + JSON.stringify(users));
+        return { status: 200, data: users };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+}
+
 module.exports.getMenu = async function(restaurant_id) {
     try {
         console.error("---------------------------------------------------------------------------");
@@ -1042,6 +1095,67 @@ module.exports.savePack = async function(pedido) {
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+module.exports.saveLikeEstacionamento = async function(pedido) {
+    console.log("[pedidosModel.savePedido] pedido = " + JSON.stringify(pedido));
+    /* checks all fields needed and ignores other fields
+    if (typeof user != "object" || failUser(user)) {
+        if (user.errMsg)
+            return { status: 400, data: { msg: user.errMsg } };
+        else
+            return { status: 400, data: { msg: "Malformed data" } };
+    }*/
+    try {
+
+        let sql =
+            "INSERT " +
+            "INTO like_estacionamento " +
+            "(like_utilizador, like_estacionamento) " +
+            "VALUES ($1, $2) " +
+            "RETURNING like_id";
+
+         //   console.log(pedido.like_utilizador + "|" + pedido.like_restaurante);
+        let result = await pool.query(sql, [pedido.like_utilizador, pedido.like_estacionamento]);
+        let pedidooo = result.rows[0].pedido_id;
+        return { status: 200, data: pedidooo };
+    } catch (err) {
+        console.log(err);
+        if (err.errno == 23503) // FK error
+            return { status: 400, data: { msg: "Type not found" } };
+        else
+            return { status: 500, data: err };
+    }
+}
+
+module.exports.saveLikeAcomodacao = async function(pedido) {
+    console.log("[pedidosModel.savePedido] pedido = " + JSON.stringify(pedido));
+    /* checks all fields needed and ignores other fields
+    if (typeof user != "object" || failUser(user)) {
+        if (user.errMsg)
+            return { status: 400, data: { msg: user.errMsg } };
+        else
+            return { status: 400, data: { msg: "Malformed data" } };
+    }*/
+    try {
+
+        let sql =
+            "INSERT " +
+            "INTO like_servico_acomodacao " +
+            "(like_utilizador, like_servico_acomodacao) " +
+            "VALUES ($1, $2) " +
+            "RETURNING like_id";
+
+          //  console.log(pedido.like_utilizador + "|" + pedido.like_restaurante);
+        let result = await pool.query(sql, [pedido.like_utilizador, pedido.like_servico_acomodacao]);
+        let pedidooo = result.rows[0].pedido_id;
+        return { status: 200, data: pedidooo };
+    } catch (err) {
+        console.log(err);
+        if (err.errno == 23503) // FK error
+            return { status: 400, data: { msg: "Type not found" } };
+        else
+            return { status: 500, data: err };
+    }
+}
 
 module.exports.saveLikeRestaurante = async function(pedido) {
     console.log("[pedidosModel.savePedido] pedido = " + JSON.stringify(pedido));
@@ -1078,6 +1192,36 @@ module.exports.DeleteLike = async function(user_id, rest_id){
 
     try{
         let sql = "DELETE FROM like_restaurante " + "WHERE like_utilizador = " + user_id + " AND like_restaurante = " + rest_id;
+        let result = await pool.query(sql);
+        let pedidofound = result.rows;
+        console.log("[artigoModel.getArtigoCategory] pedido = " + JSON.stringify(pedidofound));
+        return { status: 200, data: pedidofound };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+
+}
+
+module.exports.DeleteLikeAcomodacao = async function(user_id, rest_id){
+
+    try{
+        let sql = "DELETE FROM like_servico_acomodacao " + "WHERE like_utilizador = " + user_id + " AND like_servico_acomodacao = " + rest_id;
+        let result = await pool.query(sql);
+        let pedidofound = result.rows;
+        console.log("[artigoModel.getArtigoCategory] pedido = " + JSON.stringify(pedidofound));
+        return { status: 200, data: pedidofound };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+
+}
+
+module.exports.DeleteLikeEstacionamento = async function(user_id, rest_id){
+
+    try{
+        let sql = "DELETE FROM like_estacionamento " + "WHERE like_utilizador = " + user_id + " AND like_estacionamento = " + rest_id;
         let result = await pool.query(sql);
         let pedidofound = result.rows;
         console.log("[artigoModel.getArtigoCategory] pedido = " + JSON.stringify(pedidofound));
@@ -2066,6 +2210,36 @@ module.exports.UpdateMesaAvailable = async function(id_plate){
 
     try {
         let sql = "UPDATE mesa " + "SET mesa_availability = '0' " + "WHERE mesa_id = " + id_plate;
+        let result = await pool.query(sql);
+        let pedidofound = result.rows;
+        console.log("[ementasModel.getEmentasUser] pedido = " + JSON.stringify(pedidofound));
+        return { status: 200, data: pedidofound };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+
+}
+
+module.exports.UpdateAcomodacaoUnavailable = async function(id_plate){
+
+    try {
+        let sql = "UPDATE acomodacao " + "SET acomodacao_availability = '1' " + "WHERE acomodacao_id = " + id_plate;
+        let result = await pool.query(sql);
+        let pedidofound = result.rows;
+        console.log("[ementasModel.getEmentasUser] pedido = " + JSON.stringify(pedidofound));
+        return { status: 200, data: pedidofound };
+    } catch (err) {
+        console.log(err);
+        return { status: 500, data: err };
+    }
+
+}
+
+module.exports.UpdateAcomodacaoAvailable = async function(id_plate){
+
+    try {
+        let sql = "UPDATE acomodacao " + "SET acomodacao_availability = '0' " + "WHERE acomodacao_id = " + id_plate;
         let result = await pool.query(sql);
         let pedidofound = result.rows;
         console.log("[ementasModel.getEmentasUser] pedido = " + JSON.stringify(pedidofound));

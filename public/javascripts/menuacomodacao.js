@@ -51,6 +51,97 @@ async function getAcomodacoes(equipment_service_id){
 
 }
 
+///////////// FILTRAR POR LINHA ////////////
+
+async function filtrarLinha(linha_id){
+
+  console.log("Obtendo os restaurantes")
+  
+  // let recipeName = document.getElementById("nome1")
+   let restaurantesElem = document.getElementById("organize13");
+   var restaurant_id = sessionStorage.getItem("equipment_service_id");
+   var utilizador_id = sessionStorage.getItem("utilizador_id");
+   console.log("setItem->userId = " + utilizador_id);
+   console.log("Restaurante ID: " + restaurant_id);
+  
+  try{
+  
+  let suggestedrestaurants = await $.ajax({
+  
+  url: "/users/seeacomodacao/filter/linha/" + restaurant_id + "/" + linha_id,
+  method: "get",
+  dataType: "json",
+  
+  });
+  
+  console.log("[utilizador] utilizador = " + JSON.stringify(suggestedrestaurants));
+  
+  let html = "";
+  
+  for(let restaurant of suggestedrestaurants){
+   console.log("Restaurante: " + restaurant);
+   html += createacomodacaoHTML(restaurant);
+  }
+  
+  console.log("OBTEVE");
+  //  recipeName.innerHTML = html;
+  
+ // restaurantesElem.innerHTML = html;
+
+   restaurantesElem.innerHTML = html;
+  
+  
+  } catch(err){
+   console.log(err);
+  }
+  }
+
+  ///////////// FILTRAR POR COLUNA ////////////
+
+async function filtrarColuna(coluna_id){
+
+  console.log("Obtendo os restaurantes")
+  
+  // let recipeName = document.getElementById("nome1")
+   let restaurantesElem = document.getElementById("organize13");
+   var restaurant_id = sessionStorage.getItem("equipment_service_id");
+   var utilizador_id = sessionStorage.getItem("utilizador_id");
+   console.log("setItem->userId = " + utilizador_id);
+   console.log("Restaurante ID: " + restaurant_id);
+  
+  try{
+  
+  let suggestedrestaurants = await $.ajax({
+  
+  url: "/users/seeacomodacao/filter/coluna/" + restaurant_id + "/" + coluna_id,
+  method: "get",
+  dataType: "json",
+  
+  });
+  
+  console.log("[utilizador] utilizador = " + JSON.stringify(suggestedrestaurants));
+  
+  let html = "";
+  
+  for(let restaurant of suggestedrestaurants){
+   console.log("Restaurante: " + restaurant);
+   html += createacomodacaoHTML(restaurant);
+  }
+  
+  console.log("OBTEVE");
+  //  recipeName.innerHTML = html;
+  
+ // restaurantesElem.innerHTML = html;
+
+   restaurantesElem.innerHTML = html;
+  
+  
+  } catch(err){
+   console.log(err);
+  }
+  }
+
+////////////////////////////////////////////
 
 window.onload = function exampleFunction() {
 
@@ -101,5 +192,65 @@ window.onload = function exampleFunction() {
  //document.getElementById("descricaorestaurante").innerHTML = establishment_description;
 
  getAcomodacoes(equipment_service_id);
+
+ document.getElementById('linha1option').addEventListener("click", function(){
+
+  filtrarLinha(1);
+
+});
+
+document.getElementById('linha2option').addEventListener("click", function(){
+
+  filtrarLinha(2);
+
+});
+
+document.getElementById('linha3option').addEventListener("click", function(){
+
+  filtrarLinha(3);
+
+});
+
+document.getElementById('linha4option').addEventListener("click", function(){
+
+  filtrarLinha(4);
+
+});
+
+document.getElementById('linha5option').addEventListener("click", function(){
+
+  filtrarLinha(5);
+
+});
+
+document.getElementById('coluna1option').addEventListener("click", function(){
+
+  filtrarColuna(1);
+
+});
+
+document.getElementById('coluna2option').addEventListener("click", function(){
+
+  filtrarColuna(2);
+
+});
+
+document.getElementById('coluna3option').addEventListener("click", function(){
+
+  filtrarColuna(3);
+
+});
+
+document.getElementById('coluna4option').addEventListener("click", function(){
+
+  filtrarColuna(4);
+
+});
+
+document.getElementById('coluna5option').addEventListener("click", function(){
+
+  filtrarColuna(5);
+
+});
 
 }
